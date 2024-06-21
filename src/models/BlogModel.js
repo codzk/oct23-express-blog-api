@@ -1,40 +1,59 @@
-const express = require("express");
-const { BlogModel } = require("../models/BlogModel");
-const router = express.Router();
+/**
+- Title
+- Content
+- User (posted by)
+- Like 
+- Image upload 
+- Category/Tags/keywords 
+- Audit history
+	- user 
+	- timestamp 
+*/
 
-router.get("/", async (request, response, next) => {
+const mongoose = require("mongoose");
 
-	let result = await BlogModel.find({}).exec();
-
-	response.json({
-		message:"Blog router homepage",
-		result: result
-	});
+const blogSchema = mongoose.Schema({
+	title: {
+		type: String,
+		required: true
+	},
+	content: {
+		type: String, 
+		required: true
+	},
+	author: {
+		type: String, // come back later and replace this with a Mongoose object ID 
+		required: true
+	},
+	likes: {
+		type: [String], // come back later and replace this with a Mongoose object ID ,
+		required: false
+	},
+	headerImage: {
+		type: String, // URL to the file/image storage provider 
+		required: true
+	},
+	tags: { // keywords defined by the blog post author
+		type: [String], // ["life", "travel", "photography"]
+		required: true
+	},
+	categories: { // post category defined by website admin/developer 
+		type: [String], // ["life", "travel", "photography"]
+		enum: ["life", "travel", "photography", "coding"],
+		required: true
+	},
+	editHistory: {
+		type: [{user: String, timestamp: Date}],
+		required: false
+	}
+},
+{
+	timestamps: true
 });
 
 
-router.get("/:id", (request, response, next) => {
-	response.json({
-		message:"Blog router homepage"
-	});
-});
+const BlogModel = mongoose.model("Blog", blogSchema);
 
-router.post("/", (request, response, next) => {
-	response.json({
-		message:"Blog router homepage"
-	});
-});
-
-router.put("/", (request, response, next) => {
-	response.json({
-		message:"Blog router homepage"
-	});
-});
-
-router.delete("/", (request, response, next) => {
-	response.json({
-		message:"Blog router homepage"
-	});
-});
-
-module.exports = router;
+module.exports = {
+	BlogModel
+}
