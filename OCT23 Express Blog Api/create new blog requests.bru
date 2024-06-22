@@ -1,0 +1,22 @@
+meta {
+  name: create new blog requests
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/blogs
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+        "title": "The Fourth Cool Blog Post",
+        "content": "Pretend this is 4000 words.",
+        "author": "66761dd8888ae4c21e5f2ea7",
+        "headerImage": "https://placehold.co/600x400/EEE/31343C",
+        "tags": ["seeded", "tada!", "pokemon", "food"],
+        "categories": ["photography", "life"]
+  }
+}
